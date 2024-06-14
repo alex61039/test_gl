@@ -1,0 +1,33 @@
+generator client {
+    provider = "prisma-client-js"
+    previewFeatures = ["fullTextSearch", "fullTextIndex"]
+}
+
+datasource db {
+    provider = "mysql"
+    url   = env("DATABASE_URL")
+}
+
+
+model Action {
+    id Int @id @default(autoincrement())
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+    name_action String @db.VarChar(50)
+    number_of_gifts Int
+    taking_a_gift Int
+    receiving_a_gift Int
+    description String @db.VarChar(500)
+    card_numbers String @db.VarChar(5000)
+    gift Gift @relation(fields: [giftId], references: [id], onDelete: Cascade)
+    giftId Int
+}
+
+model Gift {
+    id Int @id @default(autoincrement())
+    name String @db.VarChar(150)
+    amount Int
+    gift_value Decimal
+    end_date_gift DateTime
+    actions Action[]
+}
